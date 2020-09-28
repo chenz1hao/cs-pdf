@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+      <div class="row">
+          {% for b in allBook %}
+            <div class="col-md-3">
+              <div class="card mb-4 shadow-sm">
+                <img class="img-responsive" style="height:300px;width:100%;" src='{% url 'index' %}media/{{ b.book_cover_img }}' />
+                <div class="card-body">
+                    <h5><a href='{% url 'detail' b_id=b.id %}'>{{ b.book_name }}</a></h5>
+                    <p class="card-text">{{ b.book_brief }}</p>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}

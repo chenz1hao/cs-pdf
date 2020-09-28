@@ -1,0 +1,106 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v4.0.1">
+    <title>CS-PDF 免费计算机科学系列丛书资源站 </title>
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+
+    <!-- Bootstrap core CSS -->
+<link href={% static "bootstrap/css/bootstrap.css" %} rel="stylesheet">
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+    <!-- Custom styles for this template -->
+    <link href={% static 'bootstrap/css/album.css' %} rel="stylesheet">
+  </head>
+  <body>
+    <header>
+  <div class="collapse bg-dark" id="navbarHeader">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-8 col-md-7 py-4">
+          <h4 class="text-white">关于</h4>
+          <p class="text-muted">免费的计算机系列丛书资源站，不断整理收集更多优质资源。</p>
+        </div>
+        <!--<div class="col-sm-4 offset-md-1 py-4">
+          <h4 class="text-white">Contact</h4>
+          <ul class="list-unstyled">
+            <li><a href="#" class="text-white">Follow on Twitter</a></li>
+            <li><a href="#" class="text-white">Like on Facebook</a></li>
+            <li><a href="#" class="text-white">Email me</a></li>
+          </ul>
+        </div> -->
+      </div>
+    </div>
+  </div>
+    <div class="navbar navbar-dark bg-dark shadow-sm">
+    <div class="container d-flex justify-content-between">
+      <a href="{% url 'index' %}" class="navbar-brand d-flex align-items-center">
+        <svg width="2em" height="3em" viewBox="0 0 16 16" class="bi bi-book-half" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" d="M8.5 2.687v9.746c.935-.53 2.12-.603 3.213-.493 1.18.12 2.37.461 3.287.811V2.828c-.885-.37-2.154-.769-3.388-.893-1.33-.134-2.458.063-3.112.752zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z"/>
+        </svg>
+        <strong style="font-family: 'Microsoft YaHei UI Light'">计算机系列书籍资源站</strong><strong class="lead">|CS-PDF.COM</strong>
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+      <main role="main">
+          <div class="album py-5 bg-light">
+            <div class="container">
+                <div class="jumbotron jumbotron-fluid">
+                    <div class="container">
+                        <form method="post" action="{% url 'search' %}">
+                            {% csrf_token %}
+                            <div class="input-group">
+                                <input name="search_text" type="text" placeholder="{% if book %} {{ book.book_name }} {% else %} 请输入书名来搜索 {% endif %}" class="form-control input-lg">
+                                <input type="submit" class="input-group-addon btn btn-primary" value="搜索"/>
+                            </div>
+                        </form>
+                        {% if tip %}
+                            <br />
+                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                              <strong>糟糕！</strong> {{ tip }}
+                              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+  {% block content %}
+  {% endblock %}
+
+<footer class="text-muted">
+  <div class="container">
+    <p class="float-right">
+      <a href="#">返回顶部</a>
+    </p>
+    <p>免责声明：本站资源来源于互联网，仅供个人学习，不用于传播分享；如有侵权，联系：chenzihao@email.swu.edu.cn删除。</p>
+  </div>
+</footer>
+    <script src={% static 'bootstrap/js/bootstrap.bundle.js' %}></script>
+</body>
+</html>

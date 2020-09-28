@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% block content %}
+            {{ tip }}
+            {% if book %}
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item">
+                      <h2>{{ book.book_name }}</h2>
+                      <br/>
+                      <img class="img-responsive" style="height:100%;width:30%" src='{% url 'index' %}media/{{ book.book_cover_img }}' />
+                  </li>
+                  <li class="list-group-item">
+                      <span class="badge badge-primary" style="font-size: large">类别</span>
+                      {{ book.book_category }}
+                  </li>
+                  <li class="list-group-item">
+                      <span class="badge badge-primary" style="font-size: large">作者</span>
+                      {{ book.book_auth }}
+                  </li>
+                  <li class="list-group-item">
+                      <span class="badge badge-primary" style="font-size: large">下载次数</span>
+                      {{ book.book_download_times }}
+                  </li>
+                  <li class="list-group-item">
+                      <span class="badge badge-primary" style="font-size: large">书籍简介</span>
+                      <br/>
+                      {% autoescape off %}
+                        {{ book.book_detail }}
+                      {% endautoescape %}
+                  </li>
+                  <li class="list-group-item">
+                      <form action="{% url 'download' b_id=book.id %}" method="post">
+                          {% csrf_token  %}
+                          <span class="badge badge-success" style="font-size: large">下载地址</span>
+                          <input type="submit" class="btn btn-outline-success" value="点击下载"></input>
+                      </form>
+                  </li>
+                </ul>
+                <div class="jumbotron">
+                    <h3>评论</h3>
+                    <ul class="list-group list-group-flush">
+                      <li class="list-group-item">
+                          声明：评论仅代表网友观点，与本站无关！
+                      </li>
+                      {% for c in comments %}
+                          <li class="list-group-item">
+                              <div class="alert alert-dark" role="alert">
+                                  {{ c.comment_user }}：{{ c.comment_text }}
+                                  <span style="float: right">{{ c.comment_date }}</span>
+                              </div>
+                          </li>
+                      {% endfor %}
+                    </ul>
+
+                    <span class="input-group">
+                        <textarea id="comment_text" class="form-control" aria-label="With textarea" placeholder="网络发言请注意言行！"></textarea>
+                        <button onclick="verify()" class="btn btn-outline-primary">发表评论</button>
+                    </span>
+                    <span id="place_begin"></span>
+                </div>
+            </div>
+          </div>
+      </main>
+</div>
+    <script>
+        $.ajaxSetup({
+            data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+        });
+
+        var n1, n2
+
+        function getRandomHtml(){
+            return '<strong>' + n1.toString() + '+' + n2.toString() + '=?' + '</strong> <input type="text" id="verifyNum"/><input value="提交验证" class="btn btn-outline-primary" onclick="comment()"/>'
+        }
+
+        function verify(){
+            n1 = Math.floor(Math.random()*10)
+            n2 = Math.floor(Math.random()*10)
+            $("#place_begin").children().remove()
+            $("#place_begin").append(getRandomHtml)
+        }
+
+        function comment(){
+            if(n1 + n2 == parseInt($("#verifyNum").val())){
+                var comment_text = $("#comment_text").val();
+                $.ajax({
+                    type : "POST",
+                    url : "{% url 'comment' %}",
+                    data : {
+                        'b_id': {{ book.id }},
+                        'comment_text': comment_text,
+                    },
+                    success: function(){
+                        window.location.reload()
+                    },
+                    error : function(e){
+                        console.log(e.status);
+                        console.log(e.responseText);
+                    },
+                });
+            }else{
+                alert('验证失败，请重试！')
+                verify()
+            }
+        }
+    </script>
+    {% endif %}
+
+{% endblock %}
